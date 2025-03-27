@@ -1,33 +1,21 @@
 // api/fetchData.js
+import { MongoClient } from "mongodb";
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
-
-const uri = process.env.MONGODB_URI;  // Environment variable for MongoDB URI
-
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-
-async function run() {
+const fetchData = async (req, res) => {
   try {
+    const client = new MongoClient(process.env.MONGODB_URI);
     await client.connect();
     const database = client.db("Testcomponents");
     const collection = database.collection("ComponentsOne");
 
-    const data = await collection.find({}).toArray();
-    console.log(data);  // Log the data to check if it's working.
-
-    return data;  // Return the data as the response.
+    // Example: limit the query to 100 records
+    const data = await collection.find({}).limit(100).toArray();
+    res.status(200).json(data);
   } catch (error) {
-    console.error("Error connecting to MongoDB:", error);
-    return { error: "Failed to fetch data" };  // Return an error message.
+    res.status(500).json({ error: "Error fetching data", details: error.message });
   } finally {
     await client.close();
   }
-}
+};
 
-module.exports = run;
+export default fetchData;
