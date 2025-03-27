@@ -1,8 +1,8 @@
-// api/fetchData.js
+// project-1.js
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
-const uri = process.env.MONGODB_URI;  // Environment variable for MongoDB URI
+const uri = "mongodb+srv://kerewev281:EwEt3GswALekuJ0x@cluster0.bj65ojg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -19,15 +19,12 @@ async function run() {
     const collection = database.collection("ComponentsOne");
 
     const data = await collection.find({}).toArray();
-    console.log(data);  // Log the data to check if it's working.
-
-    return data;  // Return the data as the response.
+    console.log("Data fetched:", data);
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
-    return { error: "Failed to fetch data" };  // Return an error message.
   } finally {
     await client.close();
   }
 }
 
-module.exports = run;
+run().catch(console.dir);
