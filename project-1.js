@@ -1,6 +1,7 @@
 import { MongoClient } from 'mongodb';
 
 export default async function handler(req, res) {
+    // MongoDB URI সরাসরি কোডে
     const uri = 'mongodb+srv://kerewev281:EwEt3GswALekuJ0x@cluster0.bj65ojg.mongodb.net/Testcomponents?retryWrites=true&w=majority';
 
     const client = new MongoClient(uri);
